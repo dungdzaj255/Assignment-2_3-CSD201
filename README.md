@@ -7,8 +7,11 @@ DSA - Assignment 2
 Income tax caculator
 using Binary Search Tree data structure
 Your task in this assignment is the same as the previous one (assignment1): you should write Java program to manage tax information. The difference is that you should use a binary search tree instead of linked list. The work has 3 levels. The higher level according to possible higher mark.
+
 Level 1: Use binary search tree with simple balancing.
+
 Level 2: Use AVL tree with insertion.When you delete node on AVL tree you can recreate the tree to ensure that it will be balanced.
+
 Level 3: Use AVL tree with insertion and deletion.
 
 There examples for all cases. If you cannot write a program entirely by yourself, you can consult these examples. However you should understand statements and know how to apply them to your application.
