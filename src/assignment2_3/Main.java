@@ -25,20 +25,21 @@ public class Main {
                     tree.loadFile("taxPayer.txt");
                     break;
                 case 2:
-                    //intput & insert data
+                    //intput & insert data by avl
+                    
                     
                     break;
                 case 3:
                     //in-order traverse
-                    
+                    tree.inOrder(tree.root);
                     break;
                 case 4:
                     //pre-order traverse
-                    
+                    tree.preOrder(tree.root);
                     break;
                 case 5:
                     //breath-first traverse
-                    
+                    tree.breadthFirst(tree.root);
                     break;
                 case 6:
                     //in-order traverse to file
