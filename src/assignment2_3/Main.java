@@ -60,7 +60,7 @@ public class Main {
                     break;
                 case 6:
                     //in-order traverse to file
-                    
+                    tree.inOrderToFile("taxpayer.txt", tree.root);
                     break;
                 case 7:
                     //search by code
