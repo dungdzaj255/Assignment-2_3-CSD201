@@ -484,7 +484,8 @@ public class BSTree {
         fw.close();
     }
 
-    Node searchByCode(String code) {
+    Node searchByCode() {
+        String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
         Node tmp = root;
         while (tmp != null) {
             if (tmp.info.code.equalsIgnoreCase(code)) {
@@ -512,6 +513,7 @@ public class BSTree {
         return null;
     }
 
+    
     void delByCopy(TaxPayer x) {
         Node f, p, q;
         p = root;
@@ -552,9 +554,32 @@ public class BSTree {
     }
     //balance tree
     void balance() {
+        int n = countNode(root);
+        TaxPayer[] a = new TaxPayer[n];
+        inOrderToArray(a, root, 0);
+        root = null;
+        balanceTree(a, 0, n - 1);
 
     }
 
+    private void balanceTree(TaxPayer[] a, int i, int j) {
+        if (i > j) {
+            return;
+        }
+        int m = (i + j) / 2;
+        insert(a[m]);
+        balanceTree(a, i, m - 1);
+        balanceTree(a, m + 1, j);
+    }
+    private void inOrderToArray(TaxPayer[] a, Node root2, int i) {
+        if (root2 == null) {
+            return;
+        }
+        inOrderToArray(a, root2.left, i);
+        a[i] = root2.info;
+        i++;
+        inOrderToArray(a, root2.right, i);
+    }
     void countTaxPayers() {
         int count = 0;
         Node tmp = root;
@@ -565,6 +590,59 @@ public class BSTree {
         System.out.println("Number of TaxPayers: " + count);
 
     }
-    //inorder traverse to file
-    
+    //avl tree delete by code
+    public void deleteByCode() {
+        String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
+        Node tmp = root;
+        Node f = null;
+        while (tmp != null) {
+            if (tmp.info.code.equalsIgnoreCase(code)) {
+                break;
+            }
+            f = tmp;
+            if (code.compareToIgnoreCase(tmp.info.code) < 0) {
+                tmp = tmp.left;
+            } else {
+                tmp = tmp.right;
+            }
+        }
+        if (tmp == null) {
+            return;
+        }
+        if (tmp.left == null) {
+            if (f == null) {
+                root = tmp.right;
+            } else {
+                if (tmp == f.left) {
+                    f.left = tmp.right;
+                } else {
+                    f.right = tmp.right;
+                }
+            }
+        } else if (tmp.right == null) {
+            if (f == null) {
+                root = tmp.left;
+            } else {
+                if (tmp == f.left) {
+                    f.left = tmp.left;
+                } else {
+                    f.right = tmp.left;
+                }
+            }
+        } else {
+            Node q = tmp.right;
+            f = null;
+            while (q.left != null) {
+                f = q;
+                q = q.left;
+            }
+            tmp.info = q.info;
+            if (f == null) {
+                tmp.right = q.right;
+            } else {
+                f.left = q.right;
+            }
+        }
+    }
+
 }

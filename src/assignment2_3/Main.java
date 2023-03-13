@@ -64,18 +64,19 @@ public class Main {
                     break;
                 case 7:
                     //search by code
-                    
+                    tree.searchByCode();
                     break;
                 case 8:
                     //delete by code by copying
-                    
+                    tree.deleteByCode();
                     break;
                 case 9:
                     //simply balanceing (bs tree)
-                    
+                    tree.balance();
                     break;
                 case 10:
                     //count number of taxpayers
+                    tree.countTaxPayers();
                     
                     break;
                 case 0:
