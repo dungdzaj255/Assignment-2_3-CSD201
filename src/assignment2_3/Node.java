@@ -21,4 +21,29 @@ public class Node {
         info = x;
         left = right = null;
     }
+
+    public TaxPayer getInfo() {
+        return info;
+    }
+
+    public void setInfo(TaxPayer info) {
+        this.info = info;
+    }
+
+    public Node getLeft() {
+        return left;
+    }
+
+    public void setLeft(Node left) {
+        this.left = left;
+    }
+
+    public Node getRight() {
+        return right;
+    }
+
+    public void setRight(Node right) {
+        this.right = right;
+    }
+    
 }

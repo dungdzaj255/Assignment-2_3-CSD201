@@ -18,7 +18,7 @@ public class BSTree {
         root = null;
     }
     public void visit(Node p) {
-        System.out.println(p);
+        System.out.println(p.info);
     }
 
     // is empty
@@ -32,33 +32,37 @@ public class BSTree {
     }
 
     // insert
-    public void insert(int x) {
+    public void insert(TaxPayer x) {
         Node p = root;
-        Node par = null;
+        Node f = null;
         while (p != null) {
-            par = p;
-            if (x < p.info) {
+            f = p;
+            if (x.getCode().compareTo(p.info.getCode()) < 0) {
                 p = p.left;
-            } else {
+            } else if (x.getCode().compareTo(p.info.getCode()) > 0) {
                 p = p.right;
+            } else {
+                System.out.println("The key " + x.getCode() + " already exists, no insertion");
+                return;
             }
         }
-        if (root == null) {
-            root = new Node(x);
-        } else if (x < par.info) {
-            par.left = new Node(x);
+        Node q = new Node(x);
+        if (f == null) {
+            root = q;
+        } else if (x.getCode().compareTo(f.info.getCode()) < 0) {
+            f.left = q;
         } else {
-            par.right = new Node(x);
+            f.right = q;
         }
     }
 
     // search
-    public Node search(int x) {
+    public Node search(String code) {
         Node p = root;
         while (p != null) {
-            if (x < p.info) {
+            if (code.compareTo(p.info.getCode()) < 0) {
                 p = p.left;
-            } else if (x > p.info) {
+            } else if (code.compareTo(p.info.getCode()) > 0) {
                 p = p.right;
             } else {
                 return p;
@@ -89,293 +93,11 @@ public class BSTree {
         }
         return p;
     }
-    //Node max() - find and return the node with maximum value in the tree.
-    //If the tree is empty, return null
-    public Node max() {
-        if (root == null) {
-            return null;
-        }
-        Node p = root;
-        while (p.right != null) {
-            p = p.right;
-        }
-        return p;
-    }
     //int height() - return the height of the tree
     public int height() {
         return height(root);
     }
-    //int sum() - return the sum of all values in the tree
-    public int sum() {
-        return sum(root);
-    }
-    public int sum(Node p) {
-        if (p == null) {
-            return 0;
-        }
-        return p.info + sum(p.left) + sum(p.right);
-    }
-    //int avg() - return the average of all values in the tree
-    public int avg() {
-        return sum() / count();
-    }
-    //The cost of a path in a tree is sum of the keys of the nodes participating  in that path. Write a  function that returns the cost of the most expensive  path from the root to a leaf node.
-    public int maxCost() {
-        return maxCost(root);
-    }
-    public int maxCost(Node p) {
-        if (p == null) {
-            return 0;
-        }
-        return p.info + Math.max(maxCost(p.left), maxCost(p.right));
-    }
-    //minCost() - return the cost of the cheapest path from the root to a leaf node.
-    public int minCost() {
-        return minCost(root);
-    }
-    public int minCost(Node p) {
-        if (p == null) {
-            return 0;
-        }
-        return p.info + Math.min(minCost(p.left), minCost(p.right));
-    }
-
-    // delete by merging
-    public void deleteByMerging(int x) {
-        Node f, p, q;
-        f = null;
-        p = root;
-        while (p != null) {
-            if (p.info == x) {
-                break;
-            }
-            f = p;
-            if (x < p.info) {
-                p = p.left;
-            } else {
-                p = p.right;
-            }
-        }
-        if (p == null) {
-            return;
-        }
-        if (p.left == null) {
-            q = p.right;
-        } else if (p.right == null) {
-            q = p.left;
-        } else {
-            Node r = p;
-            q = p.right;
-            p = p.right;
-            while (p.left != null) {
-                p = p.left;
-            }
-            p.left = r.left;
-        }
-        if (f == null) {
-            root = q;
-        } else if (f.left == p) {
-            f.left = q;
-        } else {
-            f.right = q;
-        }
-    }
-
-    public void deleteByMerging1(int x) {
-        Node p = search(x);
-        if (p == null) {
-            System.out.println("Key " + x + " does not exists, deletion failed");
-            return;
-        }
-        // find f is father of p
-        Node f = null, q = root;
-        while (q != p) {
-            f = q;
-            if (q.info > p.info)
-                q = q.left;
-            else
-                q = q.right;
-        }
-        // 1.p has no child
-        if (p.left == null && p.right == null) {
-            if (f == null)
-                root = null;
-            else if (f.left == p)
-                f.left = null;
-            else
-                f.right = null;
-        }
-        // 2.p has left child only
-        else if (p.left != null && p.right == null) {
-            if (f == null)
-                root = p.left;
-            else if (f.left == p)
-                f.left = p.left;
-            else
-                f.right = p.left;
-        }
-        // 3.p has right child only
-        else if (p.left == null && p.right != null) {
-            if (f == null)
-                root = p.right;
-            else if (f.left == p)
-                f.left = p.right;
-            else
-                f.right = p.right;
-        }
-        // 4.p has both child
-        else if (p.left != null && p.right != null) {
-            // tim q la node lon nhat ben con trai cua p -> q la con phai nhat
-            // cua con trai cua p
-            q = p.left;
-            Node t = null;
-            while (q.right != null) {
-                t = q;
-                q = q.right;
-            }
-            Node rp = p.right;
-            q.right = rp;
-            if (f == null)
-                root = p.left;
-            else if (f.left == p)
-                f.left = p.left;
-            else
-                f.right = p.left;
-        }
-    }
-    //delete by Copying have reference Node p
-    void deleteByCopy(Node p){
-        if(p==null){
-            return;
-        }
-        if(p.left==null&&p.right==null){
-            p=null;
-            return;
-        }
-        if(p.left==null){
-            p=p.right;
-            return;
-        }
-        if(p.right==null){
-            p=p.left;
-            return;
-        }
-        Node f=p;
-        Node q=p.left;
-        while(q.right!=null){
-            f=q;
-            q=q.right;
-        }
-        p.info=q.info;
-        if(f!=p){
-            f.right=q.left;
-        }else{
-            f.left=q.left;
-        }
-    }
-
-    // delete by copying
-    public void deleteByCopying(int x) {
-        Node f, p, q;
-        f = null;
-        p = root;
-        while (p != null) {
-            if (p.info == x) {
-                break;
-            }
-            f = p;
-            if (x < p.info) {
-                p = p.left;
-            } else {
-                p = p.right;
-            }
-        }
-        if (p == null) {
-            return;
-        }
-        if (p.left == null) {
-            q = p.right;
-        } else if (p.right == null) {
-            q = p.left;
-        } else {
-            Node r = p;
-            q = p.right;
-            p = p.right;
-            while (p.left != null) {
-                p = p.left;
-            }
-            p.left = r.left;
-        }
-        if (f == null) {
-            root = q;
-        } else if (f.left == p) {
-            f.left = q;
-        } else {
-            f.right = q;
-        }
-    }
     
-    public void deleteByCopy(int x) {
-        Node p = search(x);
-        if (p == null) {
-            System.out.println("Key " + x + " does not exists, deletion failed");
-            return;
-        }
-        // find f is father of p
-        Node f = null, q = root;
-        while (q != p) {
-            f = q;
-            if (q.info > p.info)
-                q = q.left;
-            else
-                q = q.right;
-        }
-        // 1.p has no child
-        if (p.left == null && p.right == null) {
-            if (f == null)
-                root = null;
-            else if (f.left == p)
-                f.left = null;
-            else
-                f.right = null;
-        }
-        // 2.p has left child only
-        else if (p.left != null && p.right == null) {
-            if (f == null)
-                root = p.left;
-            else if (f.left == p)
-                f.left = p.left;
-            else
-                f.right = p.left;
-        }
-        // 3.p has right child only
-        else if (p.left == null && p.right != null) {
-            if (f == null)
-                root = p.right;
-            else if (f.left == p)
-                f.left = p.right;
-            else
-                f.right = p.right;
-        }
-        // 4.p has both child
-        else if (p.left != null && p.right != null) {
-            // tim q la node lon nhat ben con trai cua p -> q la con phai nhat
-            // cua con trai cua p
-            q = p.left;
-            f = null;
-            while (q.right != null) {
-                f = q;
-                q = q.right;
-            }
-            p.info = q.info;
-            // delete q
-            if (f == null)
-                p.left = q.left;
-            else
-                f.right = q.left;
-        }
-    }
-
     // preorder
     public void preOrder(Node p) {
         if (p != null) {
@@ -406,50 +128,9 @@ public class BSTree {
     void breadth() {
         breadth(root);
     }
-    // beadth
+    // beadth-first traversal
     public void breadth(Node v) {
-        if (v == null) {
-            return;
-        }
-        Queue q = new LinkedList();
-        q.add(v);
-        while (!q.isEmpty()) {
-            Node p = (Node) q.remove();
-            visit(p);
-            if (p.left != null) {
-                q.add(p.left);
-            }
-            if (p.right != null) {
-                q.add(p.right);
-            }
-        }
-    }
-    //balancing a BST
-    public void balance(ArrayList a, int l, int r) {
-        if (l > r) {
-            return;
-        }
-        int m = (l + r) / 2;
-        insert((int) a.get(m));
-        balance(a, l, m - 1);
-        balance(a, m + 1, r);
-    }
-    //Copy all tree nodes to an array
-    public void copyToArray(Node p, ArrayList a) {
-        if (p == null) {
-            return;
-        }
-        copyToArray(p.left, a);
-        a.add(p.info);
-        copyToArray(p.right, a);
-    }
-    
-    //balance summary
-    public void balance() {
-        ArrayList a = new ArrayList();
-        copyToArray(root, a);
-        clear(root);
-        balance(a, 0, a.size() - 1);
+
     }
     //rotate left
     public void rotateLeft(Node p) {
@@ -468,17 +149,18 @@ public class BSTree {
         }
     }
     private Node findFather(Node p) {
-        Node f = null;
-        Node q = root;
-        while (q != p) {
-            f = q;
-            if (q.info > p.info) {
-                q = q.left;
+        Node f = root;
+        while (f != null) {
+            if (f.left == p || f.right == p) {
+                return f;
+            }
+            if (p.info.getCode().compareTo(f.info.getCode()) < 0) {
+                f = f.left;
             } else {
-                q = q.right;
+                f = f.right;
             }
         }
-        return f;
+        return null;
     }
 
     //rotate right
@@ -576,20 +258,78 @@ public class BSTree {
             balanceAVL(p);
         }
     }
-    // Write a  function to determine whether a given binary tree is a heap.
-    public boolean checkHeap(Node p){
-        if(p == null){
-            return true;
+    //delete AVL
+    public void deleteAVL(String code){
+        Node p = search(code);
+        if(p != null){
+            delete(code);
+            balanceAVL(p);
         }
-        if(p.left != null && p.info < p.left.info){
-            return false;
-        }
-        if(p.right != null && p.info < p.right.info){
-            return false;
-        }
-        return checkHeap(p.left) && checkHeap(p.right);
     }
+    
+    private void delete(String code) {
+        Node f, p;
+        p = root;
+        f = null;
+        while (p != null) {
+            if (code.compareTo(p.info.getCode()) == 0) {
+                break;
+            }
+            f = p;
+            if (code.compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+        if (p == null) {
+            return;
+        }
+        if (p.left == null && p.right == null) {
+            if (f == null) {
+                root = null;
+            } else {
+                if (p == f.left) {
+                    f.left = null;
+                } else {
+                    f.right = null;
+                }
+            }
+        } else {
+            if (p.left == null || p.right == null) {
+                Node c;
+                if (p.left == null) {
+                    c = p.right;
+                } else {
+                    c = p.left;
+                }
+                if (f == null) {
+                    root = c;
+                } else {
+                    if (p == f.left) {
+                        f.left = c;
+                    } else {
+                        f.right = c;
+                    }
+                }
+            } else {
+                Node c, fc;
+                fc = p;
+                c = p.right;
+                while (c.left != null) {
+                    fc = c;
+                    c = c.left;
+                }
+                p.info = c.info;
+                if (fc.left == c) {
+                    fc.left = c.right;
+                } else {
+                    fc.right = c.right;
+                }
+            }
+        }
 
+    }
     //load file
     void loadFile(String fname) throws IOException { // Using FileReader class
         FileReader fr = new FileReader(fname);
@@ -615,38 +355,60 @@ public class BSTree {
         fr.close();
         br.close();
     }
-    //insert taxpayer to tree by AVL
-    void insertAVL(TaxPayer x) {
-        root = insertAVL(root, x);
-    }
-    
-    
-    //traverse in order
-    void inOrder(Node p) {
-        if (p == null) {
-            return;
+
+    private void insertAVL(TaxPayer taxPayer) {
+        Node p = root;
+        Node f = null;
+        while (p != null) {
+            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
+                return;
+            }
+            f = p;
+            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
         }
-        inOrder(p.left);
-        visit(p);
-        inOrder(p.right);
-    }
-    //traverse pre order
-    void preOrder(Node p) {
-        if (p == null) {
-            return;
+        Node q = new Node(taxPayer);
+        if (f == null) {
+            root = q;
+        } else {
+            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
+                f.left = q;
+            } else {
+                f.right = q;
+            }
         }
-        visit(p);
-        preOrder(p.left);
-        preOrder(p.right);
+        balanceAVL(q);
     }
-    //traverse post order
-    void postOrder(Node p) {
-        if (p == null) {
-            return;
+    //insert AVL tree by TaxPayer
+    public void insertAVL() {
+        TaxPayer taxPayer = getInforObject();
+        Node p = root;
+        Node f = null;
+        while (p != null) {
+            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
+                return;
+            }
+            f = p;
+            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
         }
-        postOrder(p.left);
-        postOrder(p.right);
-        visit(p);
+        Node q = new Node(taxPayer);
+        if (f == null) {
+            root = q;
+        } else {
+            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
+                f.left = q;
+            } else {
+                f.right = q;
+            }
+        }
+        balanceAVL(q);
     }
     //traverse breadth first
     void breadthFirst(Node p) {
@@ -681,6 +443,16 @@ public class BSTree {
         inOrder(p.left);
         pw.printf("%10s | %10s | %.2f | %.2f | %.2f\r\n", p.info.code, p.info.name, p.info.income, p.info.deduct, p.info.tax);
         inOrder(p.right);
+    }
+    private TaxPayer getInforObject() {
+        //input taxPayer
+        String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
+        String name = Validate.inputString("Enter name: ");
+        double income = Validate.inputDouble("Enter income: ", 0, Double.MAX_VALUE);
+        double deduct = Validate.inputDouble("Enter deduct: ", 0, Double.MAX_VALUE);
+        double tax = Validate.inputDouble("Enter tax: ", 0, Double.MAX_VALUE);
+        TaxPayer tp = new TaxPayer(code, name, income, deduct, tax);
+        return tp;
     }
 
     //save file
@@ -773,5 +545,6 @@ public class BSTree {
         System.out.println("Number of TaxPayers: " + count);
 
     }
-
+    //inorder traverse to file
+    
 }

@@ -40,6 +40,34 @@ public class Validate {
             return input;
         }
     }
+    //inputString with mess, error
+    static public String inputString(String mess, String error) {
+        System.out.print(mess);
+        while (true) {
+            String input = sc.nextLine();
+            if (input.isEmpty()) {
+                System.out.print(error);
+                continue;
+            }
+            return input;
+        }
+    }
+    //getString with mess, error, regex
+    static public String inputString(String mess, String error, String regex) {
+        System.out.print(mess);
+        while (true) {
+            String input = sc.nextLine();
+            if (input.isEmpty()) {
+                System.out.print(error);
+                continue;
+            }
+            if (!input.matches(regex)) {
+                System.out.print(error);
+                continue;
+            }
+            return input;
+        }
+    }
     
     static public int inputIntLimit(String mess, int min, int max) {
         System.out.print(mess);
