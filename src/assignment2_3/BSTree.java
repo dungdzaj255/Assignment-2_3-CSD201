@@ -410,6 +410,26 @@ public class BSTree {
         }
         balanceAVL(q);
     }
+    //inorder traverse to file
+    void inOrderToFile(String fname, Node p) throws IOException {
+        FileWriter fw = new FileWriter(fname);
+        PrintWriter pw = new PrintWriter(fw);
+        if (p == null) {
+            return;
+        }
+        inOrderToFile(fname, p.left);
+        visitToFile(p, pw);
+        inOrderToFile(fname, p.right);
+        pw.close();
+        fw.close();        
+    }
+    
+    private void visitToFile(Node p, PrintWriter pw) {
+        if (p == null) {
+            return;
+        }
+        pw.println(p.info.getCode() + "|" + p.info.getName() + "|" + p.info.getIncome() + "|" + p.info.getDeduct() + "|" + p.info.getTax());
+    }
     //traverse breadth first
     void breadthFirst(Node p) {
         if (p == null) {
