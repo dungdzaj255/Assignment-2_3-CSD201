@@ -4,7 +4,6 @@
  */
   // test git
 package assignment2_3;
-import static assignment2_3.Validate.*;
 import java.io.IOException;
 /**
  *
@@ -15,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         BSTree tree = new BSTree();
+        /*
         TaxPayer tp1 = new TaxPayer("TX123456", "Nguyen Van A", 1000000, 100000, 0.1);
         TaxPayer tp2 = new TaxPayer("TX123457", "Nguyen Van B", 2000000, 200000, 0.2);
         TaxPayer tp3 = new TaxPayer("TX123458", "Nguyen Van C", 3000000, 300000, 0.3);
@@ -32,14 +32,12 @@ public class Main {
         tree.insert(tp6);
         tree.insert(tp7);
         tree.insert(tp8);
-        
+        */
         while (true) {
-            String code, name;
-            double income, deduct, taxReductionRate, tax;
             int choice = Menu.menu();
             switch (choice) {
                 case 1:
-                    //load data from file
+                    //load data from file 
                     tree.loadFile("taxPayer.txt");
                     break;
                 case 2:
@@ -59,11 +57,11 @@ public class Main {
                     tree.breadthFirst(tree.root);
                     break;
                 case 6:
-                    //in-order traverse to file
+                    //in-order traverse to file save to file okay, not check the order
                     tree.inOrderToFile("taxpayer.txt", tree.root);
                     break;
                 case 7:
-                    //search by code
+                    //search by code not responding
                     tree.searchByCode();
                     break;
                 case 8:
@@ -71,13 +69,12 @@ public class Main {
                     tree.deleteByCode();
                     break;
                 case 9:
-                    //simply balanceing (bs tree)
+                    //simply balanceing (bs tree) cannot check because we insert by avl
                     tree.balance();
                     break;
                 case 10:
                     //count number of taxpayers
                     tree.countTaxPayers();
-                    
                     break;
                 case 0:
                     return;

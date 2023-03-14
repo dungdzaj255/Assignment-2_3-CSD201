@@ -81,7 +81,7 @@ public class TaxPayer implements Comparable<TaxPayer> {
 
     @Override
     public String toString() {
-        return String.format("%-12s%-10s%-12.2f%-14.2f%.2f",code, name, income, deduct, tax);
+        return String.format("%-12s%-20s%-15.2f%-14.2f%.2f",code, name, income, deduct, tax);
     }
 
     @Override

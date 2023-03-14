@@ -100,6 +100,10 @@ public class BSTree {
     
     // preorder
     public void preOrder(Node p) {
+        if(root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
         if (p != null) {
             visit(p);
             preOrder(p.left);
@@ -109,6 +113,11 @@ public class BSTree {
 
     // inorder
     public void inOrder(Node p) {
+
+        if(root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
         if (p != null) {
             inOrder(p.left);
             visit(p);
@@ -118,6 +127,10 @@ public class BSTree {
 
     // postorder
     public void postOrder(Node p) {
+        if(root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
         if (p != null) {
             postOrder(p.left);
             postOrder(p.right);
@@ -331,6 +344,7 @@ public class BSTree {
 
     }
     //load file
+    /* 
     void loadFile(String fname) throws IOException { // Using FileReader class
         FileReader fr = new FileReader(fname);
         BufferedReader br = new BufferedReader(fr);
@@ -355,7 +369,37 @@ public class BSTree {
         fr.close();
         br.close();
     }
+*/
 
+    void loadFile(String fname) throws IOException {
+        FileReader fr = new FileReader(fname);
+        BufferedReader br = new BufferedReader(fr);
+        String s;
+        String[] a;
+        String xCode;
+        String xName;
+        double xIncome, xDeduct, xTax;
+        while (true) {
+            s = br.readLine();
+            if (s == null || s.trim().length() < 5) {
+                break;
+            }
+            a = s.split("[|]");
+            if (a.length < 5) {
+                System.out.println("Invalid line format: " + s);
+                continue;
+            }
+            xCode = a[0].trim();
+            xName = a[1].trim();
+            xIncome = Double.parseDouble(a[2].trim());
+            xDeduct = Double.parseDouble(a[3].trim());
+            xTax = Double.parseDouble(a[4].trim());
+            insert(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
+        }
+        fr.close();
+        br.close();
+    }
+    /*
     private void insertAVL(TaxPayer taxPayer) {
         Node p = root;
         Node f = null;
@@ -382,6 +426,7 @@ public class BSTree {
         }
         balanceAVL(q);
     }
+    */
     //insert AVL tree by TaxPayer
     public void insertAVL() {
         TaxPayer taxPayer = getInforObject();
@@ -414,14 +459,18 @@ public class BSTree {
     void inOrderToFile(String fname, Node p) throws IOException {
         FileWriter fw = new FileWriter(fname);
         PrintWriter pw = new PrintWriter(fw);
+        inOrderToFileHelper(pw, p);
+        pw.close();
+        fw.close();
+    }
+    
+    void inOrderToFileHelper(PrintWriter pw, Node p) {
         if (p == null) {
             return;
         }
-        inOrderToFile(fname, p.left);
+        inOrderToFileHelper(pw, p.left);
         visitToFile(p, pw);
-        inOrderToFile(fname, p.right);
-        pw.close();
-        fw.close();        
+        inOrderToFileHelper(pw, p.right);
     }
     
     private void visitToFile(Node p, PrintWriter pw) {
@@ -580,9 +629,11 @@ public class BSTree {
         i++;
         inOrderToArray(a, root2.right, i);
     }
+    // Counting the number of TaxPayers in the list.
     void countTaxPayers() {
         int count = 0;
         Node tmp = root;
+
         while (tmp != null) {
             count++;
             tmp = tmp.right;
@@ -595,6 +646,7 @@ public class BSTree {
         String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
         Node tmp = root;
         Node f = null;
+        // Searching for a node in a binary search tree.
         while (tmp != null) {
             if (tmp.info.code.equalsIgnoreCase(code)) {
                 break;
@@ -606,9 +658,12 @@ public class BSTree {
                 tmp = tmp.right;
             }
         }
+        // Checking if the variable tmp is null. If it is null, it returns.
         if (tmp == null) {
+            System.out.println("Not found");
             return;
         }
+        // Deleting a node from a binary tree.
         if (tmp.left == null) {
             if (f == null) {
                 root = tmp.right;
@@ -619,7 +674,9 @@ public class BSTree {
                     f.right = tmp.right;
                 }
             }
-        } else if (tmp.right == null) {
+        } 
+        // Deleting a node with no children.
+        else if (tmp.right == null) {
             if (f == null) {
                 root = tmp.left;
             } else {
@@ -629,7 +686,9 @@ public class BSTree {
                     f.right = tmp.left;
                 }
             }
-        } else {
+        } 
+        // Deleting a node from a binary search tree.
+        else {
             Node q = tmp.right;
             f = null;
             while (q.left != null) {
@@ -643,6 +702,7 @@ public class BSTree {
                 f.left = q.right;
             }
         }
+        System.out.println("Deleted successfully");
     }
 
 }
