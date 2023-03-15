@@ -139,11 +139,7 @@ public class BSTree {
     }
     //void breadth() - traverse a tree from root
     void breadth() {
-        breadth(root);
-    }
-    // beadth-first traversal
-    public void breadth(Node v) {
-
+        breadthFirst(root);
     }
     //rotate left
     public void rotateLeft(Node p) {
