@@ -5,6 +5,8 @@
 package assignment2_3;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -37,26 +39,27 @@ public class BSTree {
     // insert
     public void insert(TaxPayer x) {
         Node p = root;
-        Node f = null;
+        Node par = null;
         while (p != null) {
-            f = p;
-            if (x.getCode().compareTo(p.info.getCode()) < 0) {
-                p = p.left;
-            } else if (x.getCode().compareTo(p.info.getCode()) > 0) {
-                p = p.right;
-            } else {
+            if (x.getCode().compareTo(p.info.getCode()) == 0) {
                 System.out.println("The key " + x.getCode() + " already exists, no insertion");
                 return;
             }
+            par = p;
+            if (x.getCode().compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
         }
-        Node q = new Node(x);
-        if (f == null) {
-            root = q;
-        } else if (x.getCode().compareTo(f.info.getCode()) < 0) {
-            f.left = q;
+        if (root == null) {
+            root = new Node(x);
+        } else if (x.getCode().compareTo(par.info.getCode()) < 0) {
+            par.left = new Node(x);
         } else {
-            f.right = q;
+            par.right = new Node(x);
         }
+
     }
 
     //insert AVL tree by TaxPayer
@@ -66,6 +69,7 @@ public class BSTree {
         Node f = null;
         while (p != null) {
             if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
+                System.out.println("The key " + taxPayer.getCode() + " already exists, no insertion");
                 return;
             }
             f = p;
@@ -609,34 +613,33 @@ public class BSTree {
 
     }
 
-    //balance tree
-    void balance() {
-        int n = countNode(root);
-        TaxPayer[] a = new TaxPayer[n];
-        inOrderToArray(a, root, 0);
-        root = null;
-        balanceTree(a, 0, n - 1);
-
+    //balance summary
+    public void balance() {
+        ArrayList<TaxPayer> a = new ArrayList();
+        inOrderToArray(a, root);
+        clear();
+        balanceTree(a, 0, a.size() - 1);
     }
 
-    private void balanceTree(TaxPayer[] a, int i, int j) {
+    //balance tree
+    public void balanceTree(ArrayList<TaxPayer> a, int i, int j) {
         if (i > j) {
             return;
         }
         int m = (i + j) / 2;
-        insert(a[m]);
+        insert(a.get(m));
         balanceTree(a, i, m - 1);
         balanceTree(a, m + 1, j);
     }
 
-    private void inOrderToArray(TaxPayer[] a, Node root2, int i) {
-        if (root2 == null) {
+    //Copy all tree nodes to an array
+    public void inOrderToArray(ArrayList<TaxPayer> a, Node p) {
+        if (p == null) {
             return;
         }
-        inOrderToArray(a, root2.left, i);
-        a[i] = root2.info;
-        i++;
-        inOrderToArray(a, root2.right, i);
+        inOrderToArray(a, p.left);
+        a.add(p.info);
+        inOrderToArray(a, p.right);
     }
 
     // Counting the number of TaxPayers in the list.
