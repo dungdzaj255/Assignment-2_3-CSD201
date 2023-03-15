@@ -260,6 +260,11 @@ public class BSTree {
             }
         }
     }
+    //insertAVL 
+    public void insertAVL(TaxPayer x){
+        Node p = new Node(x);
+        insertAVL(p);
+    }
     //insert AVL
     public void insertAVL(Node p){
         if(p != null){
@@ -366,7 +371,7 @@ public class BSTree {
         br.close();
     }
 */
-
+    //load file in order
     void loadFile(String fname) throws IOException {
         FileReader fr = new FileReader(fname);
         BufferedReader br = new BufferedReader(fr);
@@ -381,10 +386,6 @@ public class BSTree {
                 break;
             }
             a = s.split("[|]");
-            if (a.length < 5) {
-                System.out.println("Invalid line format: " + s);
-                continue;
-            }
             xCode = a[0].trim();
             xName = a[1].trim();
             xIncome = Double.parseDouble(a[2].trim());
@@ -392,6 +393,8 @@ public class BSTree {
             xTax = Double.parseDouble(a[4].trim());
             insert(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
         }
+        //after insert balance all node
+        balanceAVL(root);
         fr.close();
         br.close();
     }
