@@ -434,7 +434,6 @@ public class BSTree {
             xTax = Double.parseDouble(a[4].trim());
             insert(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
         }
-        balance();
         fr.close();
         br.close();
     }
