@@ -272,6 +272,35 @@ public class BSTree {
         }
     }
 
+    //insert AVL tree by TaxPayer
+    public void insertAVL() {
+        TaxPayer taxPayer = getInforObject();
+        Node p = root;
+        Node f = null;
+        while (p != null) {
+            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
+                return;
+            }
+            f = p;
+            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+        Node q = new Node(taxPayer);
+        if (f == null) {
+            root = q;
+        } else {
+            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
+                f.left = q;
+            } else {
+                f.right = q;
+            }
+        }
+        balanceAVL(q);
+    }
+
     //insert AVL
     public void insertAVL(Node p) {
         if (p != null) {
@@ -380,7 +409,6 @@ public class BSTree {
         br.close();
     }
      */
-
     void loadFile(String fname) throws IOException {
         FileReader fr = new FileReader(fname);
         BufferedReader br = new BufferedReader(fr);
@@ -404,7 +432,8 @@ public class BSTree {
             xIncome = Double.parseDouble(a[2].trim());
             xDeduct = Double.parseDouble(a[3].trim());
             xTax = Double.parseDouble(a[4].trim());
-            insert(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
+            Node node = new Node(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
+            insertAVL(node);
         }
         fr.close();
         br.close();
@@ -438,35 +467,6 @@ public class BSTree {
         balanceAVL(q);
     }
      */
-    //insert AVL tree by TaxPayer
-    public void insertAVL() {
-        TaxPayer taxPayer = getInforObject();
-        Node p = root;
-        Node f = null;
-        while (p != null) {
-            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
-                return;
-            }
-            f = p;
-            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
-                p = p.left;
-            } else {
-                p = p.right;
-            }
-        }
-        Node q = new Node(taxPayer);
-        if (f == null) {
-            root = q;
-        } else {
-            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
-                f.left = q;
-            } else {
-                f.right = q;
-            }
-        }
-        balanceAVL(q);
-    }
-
     //inorder traverse to file
     void inOrderToFile(String fname, Node p) throws IOException {
         FileWriter fw = new FileWriter(fname);
