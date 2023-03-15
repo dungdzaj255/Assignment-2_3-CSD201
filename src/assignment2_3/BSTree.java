@@ -137,14 +137,6 @@ public class BSTree {
             visit(p);
         }
     }
-    //void breadth() - traverse a tree from root
-    void breadth() {
-        breadth(root);
-    }
-    // beadth-first traversal
-    public void breadth(Node v) {
-
-    }
     //rotate left
     public void rotateLeft(Node p) {
         Node q = p.right;
@@ -519,9 +511,20 @@ public class BSTree {
         String name = Validate.inputString("Enter name: ");
         double income = Validate.inputDouble("Enter income: ", 0, Double.MAX_VALUE);
         double deduct = Validate.inputDouble("Enter deduct: ", 0, Double.MAX_VALUE);
-        double tax = Validate.inputDouble("Enter tax: ", 0, Double.MAX_VALUE);
+        double tax = taxCalculator(income, deduct);
         TaxPayer tp = new TaxPayer(code, name, income, deduct, tax);
         return tp;
+    }
+    
+    public double taxCalculator(double income, double deduct) {
+        double taxableIncome = income - deduct;
+        if (taxableIncome <= 5000) {
+            return taxableIncome * 5 / 100;
+        } else if (taxableIncome > 5000 && taxableIncome <= 10000) {
+            return taxableIncome * 10 / 100;
+        } else {
+            return taxableIncome * 15 / 100;
+        }
     }
 
     //save file
