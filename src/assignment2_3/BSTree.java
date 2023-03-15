@@ -59,6 +59,43 @@ public class BSTree {
         }
     }
 
+    //insert AVL tree by TaxPayer
+    public void insertAVL() {
+        TaxPayer taxPayer = getInforObject();
+        Node p = root;
+        Node f = null;
+        while (p != null) {
+            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
+                return;
+            }
+            f = p;
+            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+        Node q = new Node(taxPayer);
+        if (f == null) {
+            root = q;
+        } else {
+            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
+                f.left = q;
+            } else {
+                f.right = q;
+            }
+        }
+        balanceAVL(q);
+    }
+
+    //insert AVL
+    public void insertAVL(Node p) {
+        if (p != null) {
+            insert(p.info);
+            balanceAVL(p);
+        }
+    }
+
     // search
     public Node search(String code) {
         Node p = root;
@@ -272,43 +309,6 @@ public class BSTree {
         }
     }
 
-    //insert AVL tree by TaxPayer
-    public void insertAVL() {
-        TaxPayer taxPayer = getInforObject();
-        Node p = root;
-        Node f = null;
-        while (p != null) {
-            if (taxPayer.getCode().compareTo(p.info.getCode()) == 0) {
-                return;
-            }
-            f = p;
-            if (taxPayer.getCode().compareTo(p.info.getCode()) < 0) {
-                p = p.left;
-            } else {
-                p = p.right;
-            }
-        }
-        Node q = new Node(taxPayer);
-        if (f == null) {
-            root = q;
-        } else {
-            if (taxPayer.getCode().compareTo(f.info.getCode()) < 0) {
-                f.left = q;
-            } else {
-                f.right = q;
-            }
-        }
-        balanceAVL(q);
-    }
-
-    //insert AVL
-    public void insertAVL(Node p) {
-        if (p != null) {
-            insert(p.info);
-            balanceAVL(p);
-        }
-    }
-
     //delete AVL
     public void deleteAVL(String code) {
         Node p = search(code);
@@ -432,9 +432,9 @@ public class BSTree {
             xIncome = Double.parseDouble(a[2].trim());
             xDeduct = Double.parseDouble(a[3].trim());
             xTax = Double.parseDouble(a[4].trim());
-            Node node = new Node(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
-            insertAVL(node);
+            insert(new TaxPayer(xCode, xName, xIncome, xDeduct, xTax));
         }
+        balance();
         fr.close();
         br.close();
     }
