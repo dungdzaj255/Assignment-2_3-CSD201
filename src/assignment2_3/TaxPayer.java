@@ -61,7 +61,7 @@ public class TaxPayer implements Comparable<TaxPayer> {
     }
 
     public double getTax() {
-        return tax;
+        return taxCalculator();
     }
 
     public void setTax(double tax) {
