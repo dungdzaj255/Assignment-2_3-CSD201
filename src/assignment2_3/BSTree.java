@@ -13,10 +13,12 @@ import java.io.*;
 public class BSTree {
 
     Node root;
+
     //constructor
     BSTree() {
         root = null;
     }
+
     public void visit(Node p) {
         System.out.println(p.info);
     }
@@ -25,6 +27,7 @@ public class BSTree {
     public boolean isEmpty() {
         return root == null;
     }
+
     //void clear() clear all node in tree
     public void clear() {
         //root = null and remove all node and reference
@@ -70,10 +73,12 @@ public class BSTree {
         }
         return null;
     }
+
     //int count() count number of node in tree
     public int count() {
         return count(root);
     }
+
     //count number of node in tree
     public int count(Node p) {
         if (p == null) {
@@ -81,6 +86,7 @@ public class BSTree {
         }
         return 1 + count(p.left) + count(p.right);
     }
+
     //Node min() - find and return the node with minimum value in the tree. 
     //If the tree is empty, return null
     public Node min() {
@@ -93,14 +99,15 @@ public class BSTree {
         }
         return p;
     }
+
     //int height() - return the height of the tree
     public int height() {
         return height(root);
     }
-    
+
     // preorder
     public void preOrder(Node p) {
-        if(root == null) {
+        if (root == null) {
             System.out.println("Tree is empty");
             return;
         }
@@ -114,7 +121,7 @@ public class BSTree {
     // inorder
     public void inOrder(Node p) {
 
-        if(root == null) {
+        if (root == null) {
             System.out.println("Tree is empty");
             return;
         }
@@ -127,7 +134,7 @@ public class BSTree {
 
     // postorder
     public void postOrder(Node p) {
-        if(root == null) {
+        if (root == null) {
             System.out.println("Tree is empty");
             return;
         }
@@ -137,6 +144,7 @@ public class BSTree {
             visit(p);
         }
     }
+
     //rotate left
     public void rotateLeft(Node p) {
         Node q = p.right;
@@ -153,6 +161,7 @@ public class BSTree {
             }
         }
     }
+
     private Node findFather(Node p) {
         Node f = root;
         while (f != null) {
@@ -184,94 +193,102 @@ public class BSTree {
             }
         }
     }
+
     //double rotate left
     public void doubleRotateLeft(Node p) {
-        if(p!= null){
+        if (p != null) {
             rotateRight(p.right);
             rotateLeft(p);
         }
     }
+
     //double rotate right
     public void doubleRotateRight(Node p) {
-        if(p!= null){
+        if (p != null) {
             rotateLeft(p.left);
             rotateRight(p);
         }
     }
+
     //clear
-    public void clear(Node p){
-        if(p != null){
+    public void clear(Node p) {
+        if (p != null) {
             clear(p.left);
             clear(p.right);
             p = null;
         }
     }
+
     //height
-    public int height(Node p){
-        if(p == null){
+    public int height(Node p) {
+        if (p == null) {
             return 0;
         }
         int hL = height(p.left);
         int hR = height(p.right);
-        if(hL > hR){
+        if (hL > hR) {
             return hL + 1;
-        }else{
+        } else {
             return hR + 1;
         }
     }
+
     //check AVL tree
-    public boolean checkAVL(Node p){
-        if(p == null){
+    public boolean checkAVL(Node p) {
+        if (p == null) {
             return true;
         }
         int hL = height(p.left);
         int hR = height(p.right);
-        if(Math.abs(hL - hR) <= 1 && checkAVL(p.left) && checkAVL(p.right)){
+        if (Math.abs(hL - hR) <= 1 && checkAVL(p.left) && checkAVL(p.right)) {
             return true;
         }
         return false;
     }
+
     //balance AVL
-    public void balanceAVL(Node p){
-        if(p != null){
+    public void balanceAVL(Node p) {
+        if (p != null) {
             int hL = height(p.left);
             int hR = height(p.right);
-            if(hL - hR == 2){
+            if (hL - hR == 2) {
                 int hLL = height(p.left.left);
                 int hLR = height(p.left.right);
-                if(hLL >= hLR){
+                if (hLL >= hLR) {
                     rotateRight(p);
-                }else{
+                } else {
                     doubleRotateRight(p);
                 }
             }
-            if(hL - hR == -2){
+            if (hL - hR == -2) {
                 int hRL = height(p.right.left);
                 int hRR = height(p.right.right);
-                if(hRL >= hRR){
+                if (hRL >= hRR) {
                     doubleRotateLeft(p);
-                }else{
+                } else {
                     rotateLeft(p);
                 }
             }
         }
     }
+
     //insert AVL
-    public void insertAVL(Node p){
-        if(p != null){
+    public void insertAVL(Node p) {
+        if (p != null) {
             insert(p.info);
             balanceAVL(p);
         }
     }
+
     //delete AVL
-    public void deleteAVL(String code){
+    public void deleteAVL(String code) {
         Node p = search(code);
-        if(p != null){
+        if (p != null) {
             delete(code);
             balanceAVL(p);
         }
     }
-    
+
     private void delete(String code) {
         Node f, p;
         p = root;
@@ -335,6 +352,7 @@ public class BSTree {
         }
 
     }
+
     //load file
     /* 
     void loadFile(String fname) throws IOException { // Using FileReader class
@@ -361,7 +379,7 @@ public class BSTree {
         fr.close();
         br.close();
     }
-*/
+     */
 
     void loadFile(String fname) throws IOException {
         FileReader fr = new FileReader(fname);
@@ -391,6 +409,7 @@ public class BSTree {
         fr.close();
         br.close();
     }
+
     /*
     private void insertAVL(TaxPayer taxPayer) {
         Node p = root;
@@ -418,7 +437,7 @@ public class BSTree {
         }
         balanceAVL(q);
     }
-    */
+     */
     //insert AVL tree by TaxPayer
     public void insertAVL() {
         TaxPayer taxPayer = getInforObject();
@@ -447,6 +466,7 @@ public class BSTree {
         }
         balanceAVL(q);
     }
+
     //inorder traverse to file
     void inOrderToFile(String fname, Node p) throws IOException {
         FileWriter fw = new FileWriter(fname);
@@ -455,7 +475,7 @@ public class BSTree {
         pw.close();
         fw.close();
     }
-    
+
     void inOrderToFileHelper(PrintWriter pw, Node p) {
         if (p == null) {
             return;
@@ -464,13 +484,14 @@ public class BSTree {
         visitToFile(p, pw);
         inOrderToFileHelper(pw, p.right);
     }
-    
+
     private void visitToFile(Node p, PrintWriter pw) {
         if (p == null) {
             return;
         }
         pw.println(p.info.getCode() + "|" + p.info.getName() + "|" + p.info.getIncome() + "|" + p.info.getDeduct() + "|" + p.info.getTax());
     }
+
     //traverse breadth first
     void breadthFirst(Node p) {
         if (p == null) {
@@ -490,6 +511,7 @@ public class BSTree {
             }
         }
     }
+
     //count node
     int countNode(Node p) {
         if (p == null) {
@@ -497,14 +519,7 @@ public class BSTree {
         }
         return 1 + countNode(p.left) + countNode(p.right);
     }
-    void SaveInOrder(PrintWriter pw, Node p) {
-        if (pw == null || p == null) {
-            return;
-        }
-        inOrder(p.left);
-        pw.printf("%10s | %10s | %.2f | %.2f | %.2f\r\n", p.info.code, p.info.name, p.info.income, p.info.deduct, p.info.tax);
-        inOrder(p.right);
-    }
+
     private TaxPayer getInforObject() {
         //input taxPayer
         String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
@@ -515,7 +530,7 @@ public class BSTree {
         TaxPayer tp = new TaxPayer(code, name, income, deduct, tax);
         return tp;
     }
-    
+
     public double taxCalculator(double income, double deduct) {
         double taxableIncome = income - deduct;
         if (taxableIncome <= 5000) {
@@ -525,15 +540,6 @@ public class BSTree {
         } else {
             return taxableIncome * 15 / 100;
         }
-    }
-
-    //save file
-    void saveFile(String fname, Node p) throws IOException { // Using FileReader class
-        FileWriter fw = new FileWriter(fname);
-        PrintWriter pw = new PrintWriter(fw);
-        SaveInOrder(pw, p);
-        pw.close();
-        fw.close();
     }
 
     Node searchByCode() {
@@ -565,7 +571,6 @@ public class BSTree {
         return null;
     }
 
-    
     void delByCopy(TaxPayer x) {
         Node f, p, q;
         p = root;
@@ -604,6 +609,7 @@ public class BSTree {
         }
 
     }
+
     //balance tree
     void balance() {
         int n = countNode(root);
@@ -623,6 +629,7 @@ public class BSTree {
         balanceTree(a, i, m - 1);
         balanceTree(a, m + 1, j);
     }
+
     private void inOrderToArray(TaxPayer[] a, Node root2, int i) {
         if (root2 == null) {
             return;
@@ -632,6 +639,7 @@ public class BSTree {
         i++;
         inOrderToArray(a, root2.right, i);
     }
+
     // Counting the number of TaxPayers in the list.
     void countTaxPayers() {
         int count = 0;
@@ -644,6 +652,7 @@ public class BSTree {
         System.out.println("Number of TaxPayers: " + count);
 
     }
+
     //avl tree delete by code
     public void deleteByCode() {
         String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
@@ -677,8 +686,7 @@ public class BSTree {
                     f.right = tmp.right;
                 }
             }
-        } 
-        // Deleting a node with no children.
+        } // Deleting a node with no children.
         else if (tmp.right == null) {
             if (f == null) {
                 root = tmp.left;
@@ -689,8 +697,7 @@ public class BSTree {
                     f.right = tmp.left;
                 }
             }
-        } 
-        // Deleting a node from a binary search tree.
+        } // Deleting a node from a binary search tree.
         else {
             Node q = tmp.right;
             f = null;

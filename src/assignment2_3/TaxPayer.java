@@ -68,17 +68,6 @@ public class TaxPayer implements Comparable<TaxPayer> {
         this.tax = tax;
     }
 
-    public double taxCalculator() {
-        double taxableIncome = income - deduct;
-        if (taxableIncome <= 5000) {
-            return taxableIncome * 5 / 100;
-        } else if (taxableIncome > 5000 && taxableIncome <= 10000) {
-            return taxableIncome * 10 / 100;
-        } else {
-            return taxableIncome * 15 / 100;
-        }
-    }
-
     @Override
     public String toString() {
         return String.format("%-12s%-20s%-15.2f%-14.2f%.2f",code, name, income, deduct, tax);
