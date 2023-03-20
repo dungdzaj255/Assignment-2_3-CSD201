@@ -52,7 +52,7 @@ public class BSTree {
         Node q = new Node(x);
         if (f == null) {
             root = q;
-        } else if (x.getCode().compareTo(f.info.getCode()) < 0) {
+        } else if (f.info == null || x.getCode().compareTo(f.info.getCode()) < 0) {
             f.left = q;
         } else {
             f.right = q;
@@ -521,7 +521,7 @@ public class BSTree {
 
     private TaxPayer getInforObject() {
         //input taxPayer
-        String code = Validate.inputString("Enter code: ", "Code is not empty", "^[A-Z]{2}[0-9]{6}$");
+        String code = Validate.inputString("Enter code: ", "Wrong format, code must contain 2 uppercase first and next is 6 number", "^[A-Z]{2}[0-9]{6}$");
         String name = Validate.inputString("Enter name: ");
         double income = Validate.inputDouble("Enter income: ", 0, Double.MAX_VALUE);
         double deduct = Validate.inputDouble("Enter deduct: ", 0, Double.MAX_VALUE);
@@ -532,6 +532,9 @@ public class BSTree {
 
     public double taxCalculator(double income, double deduct) {
         double taxableIncome = income - deduct;
+        if(taxableIncome <0) {
+            return 0;
+        }
         if (taxableIncome <= 5000) {
             return taxableIncome * 5 / 100;
         } else if (taxableIncome > 5000 && taxableIncome <= 10000) {

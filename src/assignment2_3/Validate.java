@@ -19,12 +19,12 @@ public class Validate {
                 double number = Double.parseDouble(input);
                 //check range of number
                 if (number < min || number > max) {
-                    System.out.print("Please input between " + min + ", " + max + ": ");
+                    System.out.println("Please input between " + min + ", " + max + ": ");
                     continue;
                 }
                 return number;
             } catch (NumberFormatException e) {
-                System.out.print("Please input an double number: ");
+                System.out.println("Please input an double number: ");
             }
         }
     }
@@ -40,29 +40,17 @@ public class Validate {
             return input;
         }
     }
-    //inputString with mess, error
-    static public String inputString(String mess, String error) {
-        System.out.print(mess);
-        while (true) {
-            String input = sc.nextLine();
-            if (input.isEmpty()) {
-                System.out.print(error);
-                continue;
-            }
-            return input;
-        }
-    }
     //getString with mess, error, regex
     static public String inputString(String mess, String error, String regex) {
         System.out.print(mess);
         while (true) {
             String input = sc.nextLine();
             if (input.isEmpty()) {
-                System.out.print(error);
+                System.out.println("Code cannot be empty. Try again: ");
                 continue;
             }
             if (!input.matches(regex)) {
-                System.out.print(error);
+                System.out.println(error);
                 continue;
             }
             return input;
@@ -77,12 +65,12 @@ public class Validate {
                 int number = Integer.parseInt(input);
                 //check range of number
                 if (number < min || number > max) {
-                    System.out.print("Please input between " + min + ", " + max + ": ");
+                    System.out.println("Please input between " + min + ", " + max + ": ");
                     continue;
                 }
                 return number;
             } catch (NumberFormatException e) {
-                System.out.print("Please input an integer number: ");
+                System.out.println("Please input an integer number: ");
             }
         }
     }

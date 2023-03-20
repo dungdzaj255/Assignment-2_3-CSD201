@@ -57,12 +57,14 @@ public class Main {
                     tree.breadthFirst(tree.root);
                     break;
                 case 6:
-                    //in-order traverse to file save to file okay, not check the order
+                    //in-order traverse to file save to file 
                     tree.inOrderToFile("taxpayer.txt", tree.root);
                     break;
                 case 7:
                     //search by code not responding
-                    tree.searchByCode();
+                    System.out.println(tree.searchByCode().info);    
+                    
+                    
                     break;
                 case 8:
                     //delete by code by copying
